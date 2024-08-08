@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Relatório de Consolidação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Relatório de Consolidação</h1>
+    <p>Período: {{StartDate}} - {{EndDate}}</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Saldo Inicial</th>
+                <th>Saldo Final</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#Consolidations}}
+            <tr>
+                <td>{{Date}}</td>
+                <td>{{InitialBalance}}</td>
+                <td>{{FinalBalance}}</td>
+            </tr>
+            {{/Consolidations}}
+        </tbody>
+    </table>
+</body>
+</html>
