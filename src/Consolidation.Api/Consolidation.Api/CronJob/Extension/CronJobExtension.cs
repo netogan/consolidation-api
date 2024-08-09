@@ -13,16 +13,10 @@ namespace Consolidation.Api.CronJob.Extension
             var job = JobBuilder.Create<ConsolidationJob>().Build();
             var config = builder.ApplicationServices.GetService<IConfiguration>();
 
-            //Runs every 1 minutes
-            var cronExpression = "0 * 0 ? * * *";
-
-            //var trigger = TriggerBuilder.Create()
-            //    .WithCronSchedule(cronExpression).Build();
-
             var trigger = TriggerBuilder.Create()
                 .StartAt(DateTimeOffset.Now.AddSeconds(5))
                 .WithSimpleSchedule(x => x
-                    .WithInterval(TimeSpan.FromMinutes(15))
+                    .WithInterval(TimeSpan.FromHours(24))
                     .RepeatForever())
                 .Build();
 

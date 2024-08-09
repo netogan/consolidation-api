@@ -4,18 +4,17 @@ using RestSharp;
 
 namespace Consolidation.Api.Integrations.Internal.Cashflow
 {
-    public class CashflowService(IConfiguration configuration) : ICashflowService
+    public class CashflowService(IConfiguration configuration, RestClient client) : ICashflowService
     {
         public async Task<IEnumerable<TransactionsResponse>> GetTransactions(DateOnly createAt)
         {
             var baseUrl = configuration.GetSection("Cashflow:UrlBase").Value;
 
-            var restClient = new RestClient(baseUrl!);
-            var request = new RestRequest("/api/internal/transactions", Method.Get).AddQueryParameter("createAt", createAt);
+            var request = new RestRequest($"{baseUrl}/api/internal/transactions", Method.Get).AddQueryParameter("createAt", createAt);
 
             var transactions = new List<TransactionsResponse>();
-            
-            transactions = await restClient.GetAsync<List<TransactionsResponse>>(request);
+
+            transactions = await client.GetAsync<List<TransactionsResponse>>(request);
 
             return transactions!;
         }
