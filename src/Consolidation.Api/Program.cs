@@ -8,6 +8,7 @@ using Consolidation.Api.Domain.Utils;
 using Consolidation.Api.Integrations.Internal.Cashflow;
 using Consolidation.Api.Integrations.Internal.Cashflow.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Quartz;
 using RestSharp;
 
@@ -22,6 +23,11 @@ builder.Services.AddSingleton<RestClient>(new RestClient(new RestClientOptions()
 
 builder.Services.AddDbContext<Consolidation.Api.Data.Context.ConsolidationContext>(options 
     => options.UseSqlite("Data Source=consolidation.db"));
+
+builder.Services.AddHealthChecks()
+    .AddCheck("API Health Check", () => HealthCheckResult.Healthy("API is running"))
+    .AddSqlite("Data Source=consolidation.db", name: "SQLite Health Check");
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -40,6 +46,9 @@ if (app.Environment.IsDevelopment())
 app.StartCronSchedulingConfig();
 
 app.UseHttpsRedirection();
+
+app.MapHealthChecks("/api/health");
+
 
 app.MapControllers();
 
