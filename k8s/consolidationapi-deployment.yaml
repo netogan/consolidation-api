@@ -1,3 +1,11 @@
+# ConfigMap of API with connection
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-consolidation-config
+data:
+  Cashflow__UrlBase: "http://cashflowapi-service.default.svc.cluster.local"
+---
 # Deployment of cashflowapi with dependency on db postgresql
 apiVersion: apps/v1
 kind: Deployment
@@ -17,23 +25,23 @@ spec:
       - name: consolidationapi
         image: docker.io/netogan/consolidationapi:latest
         ports:
-        - containerPort: 80
+        - containerPort: 90
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
         envFrom:
         - configMapRef:
-            name: app-config
+            name: app-consolidation-config
 ---
 #Service of cashflowapi
 apiVersion: v1
 kind: Service
 metadata:
-  name: cashflowapi-service
+  name: consolidationapi-service
 spec:
   selector:
-    app: cashflowapi
+    app: consolidationapi
   type: LoadBalancer
   ports:
-    - port: 8080
-      targetPort: 80
+    - port: 9090
+      targetPort: 90
