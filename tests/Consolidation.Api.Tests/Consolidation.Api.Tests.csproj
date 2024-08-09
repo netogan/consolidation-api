@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Consolidation.Api\Consolidation.Api\Consolidation.Api.csproj" />
+    <ProjectReference Include="..\..\src\Consolidation.Api\Consolidation.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

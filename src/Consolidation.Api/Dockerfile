@@ -1,13 +1,14 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
+ENV ASPNETCORE_URLS http://+:8080
 EXPOSE 8080
 EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Consolidation.Api/Consolidation.Api.csproj", "Consolidation.Api/"]
+COPY ["Consolidation.Api/Consolidation.Api.csproj", "."]
 RUN dotnet restore "./Consolidation.Api/Consolidation.Api.csproj"
 COPY . .
 WORKDIR "/src/Consolidation.Api"

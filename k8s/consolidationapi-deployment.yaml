@@ -1,0 +1,39 @@
+# Deployment of cashflowapi with dependency on db postgresql
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consolidationapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consolidationapi
+  template:
+    metadata:
+      labels:
+        app: consolidationapi
+    spec:
+      containers:
+      - name: consolidationapi
+        image: docker.io/netogan/consolidationapi:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        envFrom:
+        - configMapRef:
+            name: app-config
+---
+#Service of cashflowapi
+apiVersion: v1
+kind: Service
+metadata:
+  name: cashflowapi-service
+spec:
+  selector:
+    app: cashflowapi
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      targetPort: 80

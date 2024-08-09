@@ -9,6 +9,7 @@ using Consolidation.Api.Integrations.Internal.Cashflow;
 using Consolidation.Api.Integrations.Internal.Cashflow.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
+using RestSharp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddScoped<IConsolidationService, ConsolidationService>();
 builder.Services.AddScoped<IConsolidationRepository, ConsolidationRepository>();
 builder.Services.AddScoped<ICashflowService, CashflowService>();
 builder.Services.AddTransient<PdfService>();
+builder.Services.AddSingleton<RestClient>(new RestClient(new RestClientOptions()));
+
 
 builder.Services.AddDbContext<Consolidation.Api.Data.Context.ConsolidationContext>(options 
     => options.UseSqlite("Data Source=consolidation.db"));
@@ -37,8 +40,6 @@ if (app.Environment.IsDevelopment())
 app.StartCronSchedulingConfig();
 
 app.UseHttpsRedirection();
-
-//app.UseAuthorization();
 
 app.MapControllers();
 
